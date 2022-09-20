@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 class RadarLinePainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
-    const radarColor = Color(0xFF0ef30f);
+    const radarColor = Color(0xFF910024);
     final radarLinesColor = radarColor.withOpacity(.2);
 
     final center = size.center(Offset.zero);

@@ -36,10 +36,19 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
+  cure: ^0.1.0-nullsafety.0
+  network_info_plus: ^2.1.4+1
+  flutter_svg: ^1.0.3
+  audioplayers: ^1.0.1
+  universal_io: ^2.0.4
+  provider: ^6.0.2
+  json_annotation: ^4.4.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  build_runner: ^2.1.7
+  json_serializable: ^6.1.4
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
@@ -60,6 +69,10 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
+  assets:
+    - assets/
+    - assets/svgs/
+    - assets/sounds/
   # assets:
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
@@ -75,6 +88,12 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
+  fonts:
+    - family: CircularStd
+      fonts:
+        - asset: assets/fonts/circular-std-book.ttf
+        - asset: assets/fonts/circular-std-medium.ttf
+          weight: 500
   # fonts:
   #   - family: Schyler
   #     fonts:

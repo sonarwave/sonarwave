@@ -21,8 +21,8 @@ class RadarBackgroundPainter extends CustomPainter {
         endAngle: pi * 2,
         colors: const [
           Colors.transparent,
-          Color(0xFF255C25),
-          Color(0xFF0ef30f),
+          Color(0xFF600018),
+          Color(0xFF910024),
         ],
         stops: [
           0,
