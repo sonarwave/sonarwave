@@ -14,8 +14,8 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   final AudioPlayer _audioPlayer = AudioPlayer()
-  ..setReleaseMode(ReleaseMode.loop)
-  ..setVolume(0.3);
+    ..setReleaseMode(ReleaseMode.stop)
+    ..setVolume(0.1);
 
   @override
   void initState() {

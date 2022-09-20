@@ -7,5 +7,8 @@ class AppTheme {
     colorScheme: AppColors.defaultScheme,
     scaffoldBackgroundColor: AppColors.defaultScheme.background,
     backgroundColor: AppColors.defaultScheme.background,
+    splashColor: Colors.transparent,
+    highlightColor: Colors.transparent,
+    hoverColor: Colors.transparent,
   );
 }
