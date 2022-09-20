@@ -18,7 +18,7 @@ class HubProvider with ChangeNotifier {
       ..protocol = MessagePackHubProtocol()
       ..reconnect = true;
 
-      _connection = builder.build();
+    _connection = builder.build();
   }
 
   final String _url = "https://localhost:7163/connectionhub";
