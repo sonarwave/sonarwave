@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sonarwave/theme/theme.dart';
+import 'package:sonarwave/configs/theme/app_colors.dart';
 
 class AppTheme {
   static final ThemeData defaultTheme = ThemeData(

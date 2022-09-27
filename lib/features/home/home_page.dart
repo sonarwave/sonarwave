@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:sonarwave/components/components.dart';
+import 'package:get_it/get_it.dart';
+import 'package:sonarwave/configs/router/router.dart';
+import 'package:sonarwave/utils/components/components.dart';
 
-class HomeView extends StatelessWidget {
-  const HomeView({super.key});
+class HomePage extends StatelessWidget {
+  const HomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -90,7 +92,9 @@ class _CreateRoomButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return CustomButton(
       text: "Create Room",
-      onpressed: () {},
+      onpressed: () {
+        GetIt.instance.get<AppRouter>().push(const RoomRoute());
+      },
     );
   }
 }

@@ -1,8 +1,8 @@
 import 'package:cure/signalr.dart';
 import 'package:cure/signalr_message_pack.dart';
 import 'package:flutter/material.dart';
-import 'package:sonarwave/extensions/extensions.dart';
-import 'package:sonarwave/helpers/helpers.dart';
+import 'package:sonarwave/utils/extensions/extensions.dart';
+import 'package:sonarwave/utils/helpers/helpers.dart';
 
 class HubProvider with ChangeNotifier {
   HubProvider(String? ipAddress) {

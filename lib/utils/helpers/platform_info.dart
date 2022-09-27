@@ -1,5 +1,5 @@
 import 'package:flutter/foundation.dart';
-import 'package:sonarwave/enums/enums.dart';
+import 'package:sonarwave/utils/enums/enums.dart';
 import 'package:universal_io/io.dart';
 
 class PlatformInfo {
