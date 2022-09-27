@@ -1,9 +1,10 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
-import 'package:sonarwave/providers/providers.dart';
-import 'package:sonarwave/theme/theme.dart';
-import 'package:sonarwave/views/views.dart';
+import 'package:sonarwave/configs/router/router.dart';
+import 'package:sonarwave/configs/theme/theme.dart';
+import 'package:sonarwave/utils/providers/providers.dart';
 
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
@@ -13,6 +14,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
+  final AppRouter _appRouter = GetIt.instance.get<AppRouter>();
   final AudioPlayer _audioPlayer = AudioPlayer()
     ..setReleaseMode(ReleaseMode.stop)
     ..setVolume(0.1);
@@ -35,11 +37,11 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: "SonarWave",
-      theme: AppTheme.defaultTheme,
+    return MaterialApp.router(
       debugShowCheckedModeBanner: false,
-      home: const HomeView(),
+      theme: AppTheme.defaultTheme,
+      routerDelegate: _appRouter.delegate(),
+      routeInformationParser: _appRouter.defaultRouteParser(),
     );
   }
 }

@@ -29,12 +29,12 @@ class CustomTextField extends StatelessWidget {
         textAlignVertical: TextAlignVertical.center,
         cursorColor: Theme.of(context).colorScheme.onSurface,
         decoration: InputDecoration(
-          focusedBorder: InputBorder.none,
-          enabledBorder: InputBorder.none,
-          hintText: hintText,
-          counterText: "",
-          hintStyle: TextStyle(color: Theme.of(context).colorScheme.onSurface)
-        ),
+            focusedBorder: InputBorder.none,
+            enabledBorder: InputBorder.none,
+            hintText: hintText,
+            counterText: "",
+            hintStyle:
+                TextStyle(color: Theme.of(context).colorScheme.onSurface)),
         maxLength: maxLength ?? 36,
         maxLines: maxLines ?? 1,
       ),
