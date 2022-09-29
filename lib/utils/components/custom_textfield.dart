@@ -3,12 +3,14 @@ import 'package:flutter/material.dart';
 class CustomTextField extends StatelessWidget {
   const CustomTextField({
     super.key,
+    this.controller,
     this.hintText,
     this.size,
     this.maxLength,
     this.maxLines,
   });
 
+  final TextEditingController? controller;
   final String? hintText;
   final int? maxLength;
   final int? maxLines;
@@ -26,6 +28,7 @@ class CustomTextField extends StatelessWidget {
         color: Theme.of(context).colorScheme.surface,
       ),
       child: TextFormField(
+        controller: controller,
         textAlignVertical: TextAlignVertical.center,
         cursorColor: Theme.of(context).colorScheme.onSurface,
         decoration: InputDecoration(

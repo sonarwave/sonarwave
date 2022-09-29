@@ -16,8 +16,8 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   final AppRouter _appRouter = GetIt.instance.get<AppRouter>();
   final AudioPlayer _audioPlayer = AudioPlayer()
-    ..setReleaseMode(ReleaseMode.stop)
-    ..setVolume(0.1);
+    ..setReleaseMode(ReleaseMode.loop)
+    ..setVolume(0.05);
 
   @override
   void initState() {
