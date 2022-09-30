@@ -89,7 +89,7 @@ class __$$_RoomCopyWithImpl<$Res> extends _$RoomCopyWithImpl<$Res>
           : id // ignore: cast_nullable_to_non_nullable
               as String,
       users: users == freezed
-          ? _value._users
+          ? _value.users
           : users // ignore: cast_nullable_to_non_nullable
               as List<User>,
     ));
@@ -99,21 +99,16 @@ class __$$_RoomCopyWithImpl<$Res> extends _$RoomCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$_Room implements _Room {
-  const _$_Room({this.id = "", final List<User> users = const []})
-      : _users = users;
+  _$_Room({this.id = "", this.users = const []});
 
   factory _$_Room.fromJson(Map<String, dynamic> json) => _$$_RoomFromJson(json);
 
   @override
   @JsonKey()
   final String id;
-  final List<User> _users;
   @override
   @JsonKey()
-  List<User> get users {
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_users);
-  }
+  final List<User> users;
 
   @override
   String toString() {
@@ -126,7 +121,7 @@ class _$_Room implements _Room {
         (other.runtimeType == runtimeType &&
             other is _$_Room &&
             const DeepCollectionEquality().equals(other.id, id) &&
-            const DeepCollectionEquality().equals(other._users, _users));
+            const DeepCollectionEquality().equals(other.users, users));
   }
 
   @JsonKey(ignore: true)
@@ -134,7 +129,7 @@ class _$_Room implements _Room {
   int get hashCode => Object.hash(
       runtimeType,
       const DeepCollectionEquality().hash(id),
-      const DeepCollectionEquality().hash(_users));
+      const DeepCollectionEquality().hash(users));
 
   @JsonKey(ignore: true)
   @override
@@ -150,7 +145,7 @@ class _$_Room implements _Room {
 }
 
 abstract class _Room implements Room {
-  const factory _Room({final String id, final List<User> users}) = _$_Room;
+  factory _Room({final String id, final List<User> users}) = _$_Room;
 
   factory _Room.fromJson(Map<String, dynamic> json) = _$_Room.fromJson;
 

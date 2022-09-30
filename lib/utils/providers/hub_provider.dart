@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cure/signalr.dart';
 import 'package:flutter/material.dart';
 import 'package:sonarwave/utils/enums/enums.dart';
@@ -5,6 +7,7 @@ import 'package:sonarwave/utils/extensions/extensions.dart';
 import 'package:sonarwave/utils/helpers/helpers.dart';
 import 'package:sonarwave/utils/models/response/response.dart';
 import 'package:sonarwave/utils/models/room/room.dart';
+import 'package:sonarwave/utils/models/user/user.dart';
 
 class HubProvider with ChangeNotifier {
   HubProvider(String? ipAddress) {
@@ -31,8 +34,17 @@ class HubProvider with ChangeNotifier {
   AppState _state = AppState.initial;
   AppState get state => _state;
 
-  Room? _room;
-  Room? get room => _room;
+  Room _room = Room();
+  Room get room => _room;
+
+  Iterable<User> get users => _room.users
+      .where((element) => element.connectionId != _connection.connectionId);
+
+  User get user => _room.users.firstWhere(
+      (element) => element.connectionId == _connection.connectionId);
+
+  void Function(User)? onUserJoinedRoom;
+  void Function(User?)? onUserLeftRoom;
 
   Future<void> connectAsync() async {
     await _connection.startAsync();
@@ -48,14 +60,19 @@ class HubProvider with ChangeNotifier {
     _state = AppState.inProgress;
     notifyListeners();
 
-    dynamic result = await _connection.invokeAsync("JoinRoomAsync", [roomId]);
-    Response response = Response.fromJson(result);
-    if (response.succeeded) {
-      _state = AppState.success;
-      _room = Room.fromJson(response.data);
-    } else {
+    try {
+      dynamic result = await _connection.invokeAsync("JoinRoomAsync", [roomId]);
+      Response response = Response.fromJson(result);
+      if (response.succeeded) {
+        _state = AppState.success;
+        _room = Room.fromJson(response.data);
+      } else {
+        _state = AppState.failure;
+        _exception = Exception(response.message);
+      }
+    } catch (e) {
       _state = AppState.failure;
-      _exception = Exception(response.message);
+      _exception = Exception("Something unexpected occured.");
     }
 
     notifyListeners();
@@ -64,5 +81,34 @@ class HubProvider with ChangeNotifier {
   Future<void> leaveRoomAsync() async {
     await _connection.invokeAsync("LeaveRoomAsync");
     notifyListeners();
+  }
+
+  void initRoom() {
+    _onUserJoinedRoom();
+    _onUserLeftRoom();
+  }
+
+  void _onUserJoinedRoom() {
+    _connection.on("OnUserJoinedRoom", (args) {
+      try {
+        User user = User.fromJson(args.first);
+        _room.users.add(user);
+        onUserJoinedRoom?.call(user);
+        notifyListeners();
+      } catch (_) {}
+    });
+  }
+
+  void _onUserLeftRoom() {
+    _connection.on("OnUserLeftRoom", (args) {
+      try {
+        String connectionId = args.first;
+        User user = _room.users
+            .firstWhere((element) => element.connectionId == connectionId);
+        _room.users.remove(user);
+        onUserLeftRoom?.call(user);
+        notifyListeners();
+      } catch (_) {}
+    });
   }
 }
