@@ -19,10 +19,9 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  late final HubProvider _hub;
   void _listener() {
-    final hub = context.read<HubProvider>();
-
-    switch (hub.state) {
+    switch (_hub.state) {
       case AppState.initial:
         return;
       case AppState.inProgress:
@@ -39,8 +38,8 @@ class _HomePageState extends State<HomePage> {
         }
       case AppState.success:
         {
-          ScaffoldMessenger.of(context).removeCurrentSnackBar();
-          GetIt.instance.get<AppRouter>().push(const RoomRoute());
+          ScaffoldMessenger.of(context).clearSnackBars();
+          GetIt.instance.get<AppRouter>().replace(const RoomRoute());
           break;
         }
       default:
@@ -51,7 +50,7 @@ class _HomePageState extends State<HomePage> {
               ..showSnackBar(
                 SnackBar(
                   dismissDirection: DismissDirection.none,
-                  content: Text(hub.exception.toString()),
+                  content: Text(_hub.exception.toString()),
                 ),
               );
             break;
@@ -63,12 +62,13 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    context.read<HubProvider>().addListener(_listener);
+    _hub = context.read<HubProvider>();
+    _hub.addListener(_listener);
   }
 
   @override
   void dispose() {
-    context.read<HubProvider>().removeListener(_listener);
+    _hub.removeListener(_listener);
     super.dispose();
   }
 
