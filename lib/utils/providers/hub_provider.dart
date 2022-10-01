@@ -74,8 +74,8 @@ class HubProvider with ChangeNotifier {
       _state = AppState.failure;
       _exception = Exception("Something unexpected occured.");
     }
-
     notifyListeners();
+    _state = AppState.initial;
   }
 
   Future<void> leaveRoomAsync() async {

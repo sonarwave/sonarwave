@@ -1,7 +1,10 @@
 import 'package:easy_rich_text/easy_rich_text.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter/services.dart';
+import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
+import 'package:sonarwave/configs/router/router.dart';
+import 'package:sonarwave/utils/components/asset_icon.dart';
 import 'package:sonarwave/utils/components/components.dart';
 import 'package:sonarwave/utils/enums/enums.dart';
 import 'package:sonarwave/utils/models/user/user.dart';
@@ -15,6 +18,7 @@ class RoomPage extends StatefulWidget {
 }
 
 class _RoomPageState extends State<RoomPage> {
+  late final HubProvider _hub;
   void _onUserJoinedRoom(User user) {
     ScaffoldMessenger.of(context)
       ..removeCurrentSnackBar()
@@ -41,15 +45,15 @@ class _RoomPageState extends State<RoomPage> {
   @override
   void initState() {
     super.initState();
-    final hub = context.read<HubProvider>();
-    hub.initRoom();
-    hub.onUserJoinedRoom = _onUserJoinedRoom;
-    hub.onUserLeftRoom = _onUserLeftRoom;
+    _hub = context.read<HubProvider>();
+    _hub.initRoom();
+    _hub.onUserJoinedRoom = _onUserJoinedRoom;
+    _hub.onUserLeftRoom = _onUserLeftRoom;
   }
 
   @override
   void dispose() {
-    context.read<HubProvider>().leaveRoomAsync();
+    _hub.leaveRoomAsync();
     super.dispose();
   }
 
@@ -147,10 +151,10 @@ class _PlatformTypeImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SvgPicture.asset(
+    return AssetIcon(
       _getUrl(),
-      width: 30.0,
       height: 30.0,
+      width: 30.0,
       color: Theme.of(context).colorScheme.onSurface,
     );
   }
@@ -176,6 +180,24 @@ class _BottomSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: const [
+        _DisplayName(),
+        Padding(padding: EdgeInsets.all(5.0)),
+        _CopyButton(),
+        Padding(padding: EdgeInsets.all(5.0)),
+        _LeaveButton(),
+      ],
+    );
+  }
+}
+
+class _DisplayName extends StatelessWidget {
+  const _DisplayName({super.key});
+
+  @override
+  Widget build(BuildContext context) {
     final User user = context.read<HubProvider>().user;
     return EasyRichText(
       "Display Name | Guest ${user.displayName}",
@@ -195,6 +217,62 @@ class _BottomSection extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+}
+
+class _CopyButton extends StatelessWidget {
+  const _CopyButton({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomButton(
+      text: "Room ID",
+      padding: const EdgeInsets.symmetric(
+        vertical: 8.0,
+        horizontal: 16.0,
+      ),
+      trailingIcon: Container(
+        alignment: Alignment.centerRight,
+        child: const AssetIcon(
+          "assets/svgs/copy.svg",
+          width: 20.0,
+        ),
+      ),
+      onpressed: () async {
+        await Clipboard.setData(
+          ClipboardData(
+            text: context.read<HubProvider>().room.id,
+          ),
+        ).then(
+          (_) => {
+            ScaffoldMessenger.of(context)
+              ..removeCurrentSnackBar()
+              ..showSnackBar(
+                const SnackBar(
+                  content: Text(
+                    "Room ID copied.",
+                  ),
+                ),
+              )
+          },
+        );
+      },
+    );
+  }
+}
+
+class _LeaveButton extends StatelessWidget {
+  const _LeaveButton({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomButton(
+      text: "Leave Room",
+      onpressed: () {
+        context.read<HubProvider>().leaveRoomAsync();
+        GetIt.instance.get<AppRouter>().replace(const HomeRoute());
+      },
     );
   }
 }

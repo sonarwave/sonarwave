@@ -1,11 +1,11 @@
 import 'package:easy_rich_text/easy_rich_text.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
 import 'package:sonarwave/configs/router/router.dart';
 import 'package:sonarwave/features/home/providers/home_provider.dart';
+import 'package:sonarwave/utils/components/asset_icon.dart';
 import 'package:sonarwave/utils/components/components.dart';
 import 'package:sonarwave/utils/enums/enums.dart';
 import 'package:sonarwave/utils/providers/hub_provider.dart';
@@ -98,8 +98,8 @@ class _TopSection extends StatelessWidget {
     return Container(
       width: double.infinity,
       alignment: Alignment.centerLeft,
-      child: SvgPicture.asset(
-        'assets/svgs/sonarwave.svg',
+      child: AssetIcon(
+        "assets/svgs/sonarwave.svg",
         width: 150.0,
         color: Theme.of(context).colorScheme.onBackground,
       ),
