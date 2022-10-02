@@ -50,6 +50,7 @@ dependencies:
   url_launcher: ^6.1.5
   freezed:
   freezed_annotation:
+  file_picker: ^5.2.0+1
 
 dev_dependencies:
   flutter_test:
