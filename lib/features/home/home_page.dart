@@ -5,7 +5,6 @@ import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
 import 'package:sonarwave/configs/router/router.dart';
 import 'package:sonarwave/features/home/providers/home_provider.dart';
-import 'package:sonarwave/utils/components/asset_icon.dart';
 import 'package:sonarwave/utils/components/components.dart';
 import 'package:sonarwave/utils/enums/enums.dart';
 import 'package:sonarwave/utils/providers/hub_provider.dart';
