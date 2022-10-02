@@ -2,6 +2,7 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
+import 'package:sonarwave/configs/common/common.dart';
 import 'package:sonarwave/configs/router/router.dart';
 import 'package:sonarwave/configs/theme/theme.dart';
 import 'package:sonarwave/utils/providers/providers.dart';
@@ -38,6 +39,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
+      scrollBehavior: CustomScrollBehavior(),
       debugShowCheckedModeBanner: false,
       theme: AppTheme.defaultTheme,
       routerDelegate: _appRouter.delegate(),

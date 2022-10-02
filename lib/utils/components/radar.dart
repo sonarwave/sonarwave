@@ -1,8 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:sonarwave/utils/painters/radar_background_painter.dart';
-import 'package:sonarwave/utils/painters/radar_line_painter.dart';
+import 'package:sonarwave/utils/painters/painters.dart';
 
 class Radar extends StatefulWidget {
   final double radarRange;

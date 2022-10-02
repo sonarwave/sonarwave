@@ -4,7 +4,6 @@ import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
 import 'package:sonarwave/configs/router/router.dart';
-import 'package:sonarwave/utils/components/asset_icon.dart';
 import 'package:sonarwave/utils/components/components.dart';
 import 'package:sonarwave/utils/enums/enums.dart';
 import 'package:sonarwave/utils/models/user/user.dart';
