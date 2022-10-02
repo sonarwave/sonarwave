@@ -1,11 +1,14 @@
 import 'package:easy_rich_text/easy_rich_text.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
 import 'package:sonarwave/configs/router/router.dart';
+import 'package:sonarwave/features/room/components/file_transfer_request.dialog.dart';
 import 'package:sonarwave/utils/components/components.dart';
 import 'package:sonarwave/utils/enums/enums.dart';
+import 'package:sonarwave/utils/models/file/file.dart';
 import 'package:sonarwave/utils/models/user/user.dart';
 import 'package:sonarwave/utils/providers/hub_provider.dart';
 
@@ -30,15 +33,51 @@ class _RoomPageState extends State<RoomPage> {
       );
   }
 
-  void _onUserLeftRoom(User? user) {
+  void _onUserLeftRoom(User user) {
     ScaffoldMessenger.of(context)
       ..removeCurrentSnackBar()
       ..showSnackBar(
         SnackBar(
           dismissDirection: DismissDirection.none,
-          content: Text("Guest: ${user?.displayName} has left!"),
+          content: Text("Guest: ${user.displayName} has left!"),
         ),
       );
+  }
+
+  void _onFileTransferRequest(User user, FileItem file) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      barrierColor: const Color(0xFF600018).withOpacity(0.5),
+      builder: (BuildContext context) {
+        return FileTransferRequestDialog(
+          user: user,
+          file: file,
+          onAccept: () {
+/*             _hub.sendFileTransferRespond(
+              UpdateFileRequest(
+                id: file.id,
+                acceptance: TransferAcceptance.accepted,
+              ),
+            ); */
+            Navigator.of(context).pop();
+          },
+          onDeny: () {
+/*             _hub.sendFileTransferRespond(
+              UpdateFileRequest(
+                id: file.id,
+                acceptance: TransferAcceptance.denied,
+              ),
+            ); */
+            Navigator.of(context).pop();
+          },
+        );
+      },
+    );
+  }
+
+  void _onFileTransferRespond(FileItem file) {
+    throw UnimplementedError();
   }
 
   @override
@@ -48,11 +87,14 @@ class _RoomPageState extends State<RoomPage> {
     _hub.initRoom();
     _hub.onUserJoinedRoom = _onUserJoinedRoom;
     _hub.onUserLeftRoom = _onUserLeftRoom;
+    _hub.onFileTransferRequest = _onFileTransferRequest;
+    _hub.onFileTransferRespond = _onFileTransferRespond;
   }
 
   @override
   void dispose() {
     _hub.leaveRoomAsync();
+    _hub.disposeRoom();
     super.dispose();
   }
 
@@ -109,52 +151,29 @@ class _ListItemBuilder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CircleAvatar(
-      backgroundColor: const Color(0xFF600018).withOpacity(0.5),
-      radius: 60.0,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          _PlatformTypeImage(user.platformType),
-          const Padding(padding: EdgeInsets.all(4.0)),
-          Text(
-            "Guest ${user.displayName}",
-            style: TextStyle(
-              color: Theme.of(context).colorScheme.onSurface,
-              fontWeight: FontWeight.w400,
-            ),
-          )
-        ],
-      ),
-    );
-  }
-}
-
-class _PlatformTypeImage extends StatelessWidget {
-  const _PlatformTypeImage(this.platformType, {super.key});
-
-  final PlatformType platformType;
-
-  String _getUrl() {
-    switch (platformType) {
-      case PlatformType.desktop:
-        return "assets/svgs/desktop.svg";
-      case PlatformType.web:
-        return "assets/svgs/web.svg";
-      case PlatformType.phone:
-        return "assets/svgs/phone.svg";
-      default:
-        return "assets/svgs/unknown.svg";
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return AssetIcon(
-      _getUrl(),
-      height: 30.0,
-      width: 30.0,
-      color: Theme.of(context).colorScheme.onSurface,
+    return InkWell(
+      onTap: () {
+        FilePicker.platform
+            .pickFiles(
+          allowMultiple: false,
+        )
+            .then(
+          (value) {
+            if (value != null) {
+              var file = value.files.first;
+              var request = CreateFileRequest(
+                name: file.name,
+                path: file.path!,
+                extension: file.extension!,
+                recipientId: user.connectionId,
+                size: file.size / 1000 / 1000,
+              );
+              context.read<HubProvider>().sendFileTransferRequest(request);
+            }
+          },
+        );
+      },
+      child: CustomAvatar(user),
     );
   }
 }
