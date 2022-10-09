@@ -92,7 +92,7 @@ class _ContentMiddle extends StatelessWidget {
         Text(_getBytesInFormat()),
         const Padding(padding: EdgeInsets.all(10.0)),
         EasyRichText(
-          "Are you should you want to accept this file by Guest ${file.sender.displayName}?",
+          "Are you sure you want to accept this file by Guest ${file.sender.displayName}?",
           patternList: [
             EasyRichTextPattern(
               targetString: "Are you should you want to accept this file by",
