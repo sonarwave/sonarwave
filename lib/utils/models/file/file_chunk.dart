@@ -10,10 +10,11 @@ String fileChunkToJson(FileChunk data) => json.encode(data.toJson());
 
 @freezed
 abstract class FileChunk with _$FileChunk {
-    const factory FileChunk({
-        @Default("") String fileId,
-        @Default([]) List<int> chunk,
-    }) = _FileChunk;
+  const factory FileChunk({
+    @Default("") String fileId,
+    @Default([]) List<int> chunk,
+  }) = _FileChunk;
 
-    factory FileChunk.fromJson(Map<String, dynamic> json) => _$FileChunkFromJson(json);
+  factory FileChunk.fromJson(Map<String, dynamic> json) =>
+      _$FileChunkFromJson(json);
 }

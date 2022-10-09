@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:developer';
 import 'dart:io';
 import 'package:cure/signalr.dart';
 import 'package:flutter/foundation.dart';
@@ -224,12 +223,13 @@ class HubProvider with ChangeNotifier {
       (value) {
         if (value != null) {
           File newFile = File("${value.path}\\${file.id}.${file.extension}");
-          if(newFile.existsSync()) {
+          if (newFile.existsSync()) {
             newFile.writeAsBytesSync(chunk.chunk, mode: FileMode.append);
           } else {
             newFile.writeAsBytesSync(chunk.chunk);
           }
           if (newFile.lengthSync() == (file.size * 1000 * 1000)) {
+            _files.remove(file);
             onFileReceivingFinished?.call(file);
           }
         }
