@@ -27,7 +27,9 @@ mixin _$FileItem {
   String get extension => throw _privateConstructorUsedError;
   double get size => throw _privateConstructorUsedError;
   String get senderId => throw _privateConstructorUsedError;
+  User get sender => throw _privateConstructorUsedError;
   String get recipientId => throw _privateConstructorUsedError;
+  User get recipient => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -47,7 +49,12 @@ abstract class $FileItemCopyWith<$Res> {
       String extension,
       double size,
       String senderId,
-      String recipientId});
+      User sender,
+      String recipientId,
+      User recipient});
+
+  $UserCopyWith<$Res> get sender;
+  $UserCopyWith<$Res> get recipient;
 }
 
 /// @nodoc
@@ -67,7 +74,9 @@ class _$FileItemCopyWithImpl<$Res> implements $FileItemCopyWith<$Res> {
     Object? extension = freezed,
     Object? size = freezed,
     Object? senderId = freezed,
+    Object? sender = freezed,
     Object? recipientId = freezed,
+    Object? recipient = freezed,
   }) {
     return _then(_value.copyWith(
       id: id == freezed
@@ -98,11 +107,33 @@ class _$FileItemCopyWithImpl<$Res> implements $FileItemCopyWith<$Res> {
           ? _value.senderId
           : senderId // ignore: cast_nullable_to_non_nullable
               as String,
+      sender: sender == freezed
+          ? _value.sender
+          : sender // ignore: cast_nullable_to_non_nullable
+              as User,
       recipientId: recipientId == freezed
           ? _value.recipientId
           : recipientId // ignore: cast_nullable_to_non_nullable
               as String,
+      recipient: recipient == freezed
+          ? _value.recipient
+          : recipient // ignore: cast_nullable_to_non_nullable
+              as User,
     ));
+  }
+
+  @override
+  $UserCopyWith<$Res> get sender {
+    return $UserCopyWith<$Res>(_value.sender, (value) {
+      return _then(_value.copyWith(sender: value));
+    });
+  }
+
+  @override
+  $UserCopyWith<$Res> get recipient {
+    return $UserCopyWith<$Res>(_value.recipient, (value) {
+      return _then(_value.copyWith(recipient: value));
+    });
   }
 }
 
@@ -120,7 +151,14 @@ abstract class _$$_FileItemCopyWith<$Res> implements $FileItemCopyWith<$Res> {
       String extension,
       double size,
       String senderId,
-      String recipientId});
+      User sender,
+      String recipientId,
+      User recipient});
+
+  @override
+  $UserCopyWith<$Res> get sender;
+  @override
+  $UserCopyWith<$Res> get recipient;
 }
 
 /// @nodoc
@@ -142,7 +180,9 @@ class __$$_FileItemCopyWithImpl<$Res> extends _$FileItemCopyWithImpl<$Res>
     Object? extension = freezed,
     Object? size = freezed,
     Object? senderId = freezed,
+    Object? sender = freezed,
     Object? recipientId = freezed,
+    Object? recipient = freezed,
   }) {
     return _then(_$_FileItem(
       id: id == freezed
@@ -173,10 +213,18 @@ class __$$_FileItemCopyWithImpl<$Res> extends _$FileItemCopyWithImpl<$Res>
           ? _value.senderId
           : senderId // ignore: cast_nullable_to_non_nullable
               as String,
+      sender: sender == freezed
+          ? _value.sender
+          : sender // ignore: cast_nullable_to_non_nullable
+              as User,
       recipientId: recipientId == freezed
           ? _value.recipientId
           : recipientId // ignore: cast_nullable_to_non_nullable
               as String,
+      recipient: recipient == freezed
+          ? _value.recipient
+          : recipient // ignore: cast_nullable_to_non_nullable
+              as User,
     ));
   }
 }
@@ -192,7 +240,9 @@ class _$_FileItem implements _FileItem {
       this.extension = "",
       this.size = 0.0,
       this.senderId = "",
-      this.recipientId = ""});
+      this.sender = const User(),
+      this.recipientId = "",
+      this.recipient = const User()});
 
   factory _$_FileItem.fromJson(Map<String, dynamic> json) =>
       _$$_FileItemFromJson(json);
@@ -220,11 +270,17 @@ class _$_FileItem implements _FileItem {
   final String senderId;
   @override
   @JsonKey()
+  final User sender;
+  @override
+  @JsonKey()
   final String recipientId;
+  @override
+  @JsonKey()
+  final User recipient;
 
   @override
   String toString() {
-    return 'FileItem(id: $id, name: $name, path: $path, acceptance: $acceptance, extension: $extension, size: $size, senderId: $senderId, recipientId: $recipientId)';
+    return 'FileItem(id: $id, name: $name, path: $path, acceptance: $acceptance, extension: $extension, size: $size, senderId: $senderId, sender: $sender, recipientId: $recipientId, recipient: $recipient)';
   }
 
   @override
@@ -240,8 +296,10 @@ class _$_FileItem implements _FileItem {
             const DeepCollectionEquality().equals(other.extension, extension) &&
             const DeepCollectionEquality().equals(other.size, size) &&
             const DeepCollectionEquality().equals(other.senderId, senderId) &&
+            const DeepCollectionEquality().equals(other.sender, sender) &&
             const DeepCollectionEquality()
-                .equals(other.recipientId, recipientId));
+                .equals(other.recipientId, recipientId) &&
+            const DeepCollectionEquality().equals(other.recipient, recipient));
   }
 
   @JsonKey(ignore: true)
@@ -255,7 +313,9 @@ class _$_FileItem implements _FileItem {
       const DeepCollectionEquality().hash(extension),
       const DeepCollectionEquality().hash(size),
       const DeepCollectionEquality().hash(senderId),
-      const DeepCollectionEquality().hash(recipientId));
+      const DeepCollectionEquality().hash(sender),
+      const DeepCollectionEquality().hash(recipientId),
+      const DeepCollectionEquality().hash(recipient));
 
   @JsonKey(ignore: true)
   @override
@@ -279,7 +339,9 @@ abstract class _FileItem implements FileItem {
       final String extension,
       final double size,
       final String senderId,
-      final String recipientId}) = _$_FileItem;
+      final User sender,
+      final String recipientId,
+      final User recipient}) = _$_FileItem;
 
   factory _FileItem.fromJson(Map<String, dynamic> json) = _$_FileItem.fromJson;
 
@@ -298,7 +360,11 @@ abstract class _FileItem implements FileItem {
   @override
   String get senderId;
   @override
+  User get sender;
+  @override
   String get recipientId;
+  @override
+  User get recipient;
   @override
   @JsonKey(ignore: true)
   _$$_FileItemCopyWith<_$_FileItem> get copyWith =>

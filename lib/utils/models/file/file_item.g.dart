@@ -16,7 +16,13 @@ _$_FileItem _$$_FileItemFromJson(Map<String, dynamic> json) => _$_FileItem(
       extension: json['extension'] as String? ?? "",
       size: (json['size'] as num?)?.toDouble() ?? 0.0,
       senderId: json['senderId'] as String? ?? "",
+      sender: json['sender'] == null
+          ? const User()
+          : User.fromJson(json['sender'] as Map<String, dynamic>),
       recipientId: json['recipientId'] as String? ?? "",
+      recipient: json['recipient'] == null
+          ? const User()
+          : User.fromJson(json['recipient'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$$_FileItemToJson(_$_FileItem instance) =>
@@ -28,7 +34,9 @@ Map<String, dynamic> _$$_FileItemToJson(_$_FileItem instance) =>
       'extension': instance.extension,
       'size': instance.size,
       'senderId': instance.senderId,
+      'sender': instance.sender,
       'recipientId': instance.recipientId,
+      'recipient': instance.recipient,
     };
 
 const _$TransferAcceptanceEnumMap = {

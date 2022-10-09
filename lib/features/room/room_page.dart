@@ -8,9 +8,10 @@ import 'package:sonarwave/configs/router/router.dart';
 import 'package:sonarwave/features/room/components/file_transfer_request.dialog.dart';
 import 'package:sonarwave/utils/components/components.dart';
 import 'package:sonarwave/utils/enums/enums.dart';
+import 'package:sonarwave/utils/extensions/extensions.dart';
 import 'package:sonarwave/utils/models/file/file.dart';
 import 'package:sonarwave/utils/models/user/user.dart';
-import 'package:sonarwave/utils/providers/hub_provider.dart';
+import 'package:sonarwave/utils/providers/providers.dart';
 
 class RoomPage extends StatefulWidget {
   const RoomPage({super.key});
@@ -22,53 +23,39 @@ class RoomPage extends StatefulWidget {
 class _RoomPageState extends State<RoomPage> {
   late final HubProvider _hub;
   void _onUserJoinedRoom(User user) {
-    ScaffoldMessenger.of(context)
-      ..removeCurrentSnackBar()
-      ..showSnackBar(
-        SnackBar(
-          content: Text(
-            "Guest: ${user.displayName} joined!",
-          ),
-        ),
-      );
+    context.replaceSnackBar(
+        content: Text("Guest: ${user.displayName} joined!"));
   }
 
   void _onUserLeftRoom(User user) {
-    ScaffoldMessenger.of(context)
-      ..removeCurrentSnackBar()
-      ..showSnackBar(
-        SnackBar(
-          dismissDirection: DismissDirection.none,
-          content: Text("Guest: ${user.displayName} has left!"),
-        ),
-      );
+    context.replaceSnackBar(
+        content: Text("Guest: ${user.displayName} has left!"));
   }
 
-  void _onFileTransferRequest(User user, FileItem file) {
+  void _onFileTransferRequest(FileItem file) {
     showDialog(
       context: context,
       barrierDismissible: false,
       barrierColor: const Color(0xFF600018).withOpacity(0.5),
       builder: (BuildContext context) {
         return FileTransferRequestDialog(
-          user: user,
           file: file,
           onAccept: () {
-/*             _hub.sendFileTransferRespond(
+            _hub.sendFileTransferRespondAsync(
               UpdateFileRequest(
                 id: file.id,
                 acceptance: TransferAcceptance.accepted,
               ),
-            ); */
+            );
             Navigator.of(context).pop();
           },
           onDeny: () {
-/*             _hub.sendFileTransferRespond(
+            _hub.sendFileTransferRespondAsync(
               UpdateFileRequest(
                 id: file.id,
                 acceptance: TransferAcceptance.denied,
               ),
-            ); */
+            );
             Navigator.of(context).pop();
           },
         );
@@ -77,7 +64,36 @@ class _RoomPageState extends State<RoomPage> {
   }
 
   void _onFileTransferRespond(FileItem file) {
-    throw UnimplementedError();
+    if (file.acceptance == TransferAcceptance.denied) {
+      context.replaceSnackBar(
+          content: Text("Permission to transfer ${file.name} was denied."));
+    } else {
+      context.replaceSnackBar(
+        snackBar: SnackBar(
+          duration: const Duration(days: 1),
+          content: Text("Transfering ${file.name}"),
+        ),
+      );
+    }
+  }
+
+  void _onFileTransferingFinished(FileItem file) {
+    context.replaceSnackBar(
+        content: Text("Successfully transferred ${file.name}"));
+  }
+
+  void _onFileReceiving(FileItem file) {
+    context.replaceSnackBar(
+      snackBar: SnackBar(
+        duration: const Duration(days: 1),
+        content: Text("Downloading ${file.name}"),
+      ),
+    );
+  }
+
+  void _onFileReceivingFinished(FileItem file) {
+    context.replaceSnackBar(
+        content: Text("Successfully downloaded ${file.name}"));
   }
 
   @override
@@ -89,6 +105,9 @@ class _RoomPageState extends State<RoomPage> {
     _hub.onUserLeftRoom = _onUserLeftRoom;
     _hub.onFileTransferRequest = _onFileTransferRequest;
     _hub.onFileTransferRespond = _onFileTransferRespond;
+    _hub.onFileReceiving = _onFileReceiving;
+    _hub.onFileReceivingFinished = _onFileReceivingFinished;
+    _hub.onFileTransferFinished = _onFileTransferingFinished;
   }
 
   @override
@@ -168,7 +187,7 @@ class _ListItemBuilder extends StatelessWidget {
                 recipientId: user.connectionId,
                 size: file.size / 1000 / 1000,
               );
-              context.read<HubProvider>().sendFileTransferRequest(request);
+              context.read<HubProvider>().sendFileTransferRequestAsync(request);
             }
           },
         );
@@ -263,17 +282,8 @@ class _CopyButton extends StatelessWidget {
             text: context.read<HubProvider>().room.id,
           ),
         ).then(
-          (_) => {
-            ScaffoldMessenger.of(context)
-              ..removeCurrentSnackBar()
-              ..showSnackBar(
-                const SnackBar(
-                  content: Text(
-                    "Room ID copied.",
-                  ),
-                ),
-              )
-          },
+          (_) =>
+              context.replaceSnackBar(content: const Text("Room ID copied.")),
         );
       },
     );
