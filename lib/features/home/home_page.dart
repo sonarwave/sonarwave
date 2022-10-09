@@ -7,6 +7,7 @@ import 'package:sonarwave/configs/router/router.dart';
 import 'package:sonarwave/features/home/providers/home_provider.dart';
 import 'package:sonarwave/utils/components/components.dart';
 import 'package:sonarwave/utils/enums/enums.dart';
+import 'package:sonarwave/utils/extensions/extensions.dart';
 import 'package:sonarwave/utils/providers/hub_provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -25,14 +26,8 @@ class _HomePageState extends State<HomePage> {
         return;
       case AppState.inProgress:
         {
-          ScaffoldMessenger.of(context)
-            ..removeCurrentSnackBar()
-            ..showSnackBar(
-              const SnackBar(
-                dismissDirection: DismissDirection.none,
-                content: Text("Loading..."),
-              ),
-            );
+          context.replaceSnackBar(
+              snackBar: const SnackBar(content: Text("Loading...")));
           break;
         }
       case AppState.success:
@@ -43,17 +38,8 @@ class _HomePageState extends State<HomePage> {
         }
       default:
         {
-          {
-            ScaffoldMessenger.of(context)
-              ..removeCurrentSnackBar()
-              ..showSnackBar(
-                SnackBar(
-                  dismissDirection: DismissDirection.none,
-                  content: Text(_hub.exception.toString()),
-                ),
-              );
-            break;
-          }
+          context.replaceSnackBar(content: Text(_hub.exception.toString()));
+          break;
         }
     }
   }

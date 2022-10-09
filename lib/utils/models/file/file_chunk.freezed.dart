@@ -21,7 +21,7 @@ FileChunk _$FileChunkFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$FileChunk {
   String get fileId => throw _privateConstructorUsedError;
-  String get chunk => throw _privateConstructorUsedError;
+  List<int> get chunk => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -33,7 +33,7 @@ mixin _$FileChunk {
 abstract class $FileChunkCopyWith<$Res> {
   factory $FileChunkCopyWith(FileChunk value, $Res Function(FileChunk) then) =
       _$FileChunkCopyWithImpl<$Res>;
-  $Res call({String fileId, String chunk});
+  $Res call({String fileId, List<int> chunk});
 }
 
 /// @nodoc
@@ -57,7 +57,7 @@ class _$FileChunkCopyWithImpl<$Res> implements $FileChunkCopyWith<$Res> {
       chunk: chunk == freezed
           ? _value.chunk
           : chunk // ignore: cast_nullable_to_non_nullable
-              as String,
+              as List<int>,
     ));
   }
 }
@@ -68,7 +68,7 @@ abstract class _$$_FileChunkCopyWith<$Res> implements $FileChunkCopyWith<$Res> {
           _$_FileChunk value, $Res Function(_$_FileChunk) then) =
       __$$_FileChunkCopyWithImpl<$Res>;
   @override
-  $Res call({String fileId, String chunk});
+  $Res call({String fileId, List<int> chunk});
 }
 
 /// @nodoc
@@ -92,9 +92,9 @@ class __$$_FileChunkCopyWithImpl<$Res> extends _$FileChunkCopyWithImpl<$Res>
           : fileId // ignore: cast_nullable_to_non_nullable
               as String,
       chunk: chunk == freezed
-          ? _value.chunk
+          ? _value._chunk
           : chunk // ignore: cast_nullable_to_non_nullable
-              as String,
+              as List<int>,
     ));
   }
 }
@@ -102,7 +102,8 @@ class __$$_FileChunkCopyWithImpl<$Res> extends _$FileChunkCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$_FileChunk implements _FileChunk {
-  const _$_FileChunk({this.fileId = "", this.chunk = ""});
+  const _$_FileChunk({this.fileId = "", final List<int> chunk = const []})
+      : _chunk = chunk;
 
   factory _$_FileChunk.fromJson(Map<String, dynamic> json) =>
       _$$_FileChunkFromJson(json);
@@ -110,9 +111,13 @@ class _$_FileChunk implements _FileChunk {
   @override
   @JsonKey()
   final String fileId;
+  final List<int> _chunk;
   @override
   @JsonKey()
-  final String chunk;
+  List<int> get chunk {
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_chunk);
+  }
 
   @override
   String toString() {
@@ -125,7 +130,7 @@ class _$_FileChunk implements _FileChunk {
         (other.runtimeType == runtimeType &&
             other is _$_FileChunk &&
             const DeepCollectionEquality().equals(other.fileId, fileId) &&
-            const DeepCollectionEquality().equals(other.chunk, chunk));
+            const DeepCollectionEquality().equals(other._chunk, _chunk));
   }
 
   @JsonKey(ignore: true)
@@ -133,7 +138,7 @@ class _$_FileChunk implements _FileChunk {
   int get hashCode => Object.hash(
       runtimeType,
       const DeepCollectionEquality().hash(fileId),
-      const DeepCollectionEquality().hash(chunk));
+      const DeepCollectionEquality().hash(_chunk));
 
   @JsonKey(ignore: true)
   @override
@@ -149,7 +154,7 @@ class _$_FileChunk implements _FileChunk {
 }
 
 abstract class _FileChunk implements FileChunk {
-  const factory _FileChunk({final String fileId, final String chunk}) =
+  const factory _FileChunk({final String fileId, final List<int> chunk}) =
       _$_FileChunk;
 
   factory _FileChunk.fromJson(Map<String, dynamic> json) =
@@ -158,7 +163,7 @@ abstract class _FileChunk implements FileChunk {
   @override
   String get fileId;
   @override
-  String get chunk;
+  List<int> get chunk;
   @override
   @JsonKey(ignore: true)
   _$$_FileChunkCopyWith<_$_FileChunk> get copyWith =>
