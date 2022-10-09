@@ -7,7 +7,7 @@ class CustomAvatar extends StatelessWidget {
   const CustomAvatar(this.user, {Key? key}) : super(key: key);
 
   final User user;
-  
+
   @override
   Widget build(BuildContext context) {
     return CircleAvatar(

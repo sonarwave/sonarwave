@@ -14,18 +14,19 @@ String fileItemToJson(FileItem data) => json.encode(data.toJson());
 
 @freezed
 abstract class FileItem with _$FileItem {
-    const factory FileItem({
-        @Default("") String id,
-        @Default("") String name,
-        @Default("") String path,
-        @Default(TransferAcceptance.initial) TransferAcceptance acceptance,
-        @Default("") String extension,
-        @Default(0.0) double size,
-        @Default("") String senderId,
-        @Default(User()) User sender,
-        @Default("") String recipientId,
-        @Default(User()) User recipient,
-    }) = _FileItem;
+  const factory FileItem({
+    @Default("") String id,
+    @Default("") String name,
+    @Default("") String path,
+    @Default(TransferAcceptance.initial) TransferAcceptance acceptance,
+    @Default("") String extension,
+    @Default(0.0) double size,
+    @Default("") String senderId,
+    @Default(User()) User sender,
+    @Default("") String recipientId,
+    @Default(User()) User recipient,
+  }) = _FileItem;
 
-    factory FileItem.fromJson(Map<String, dynamic> json) => _$FileItemFromJson(json);
+  factory FileItem.fromJson(Map<String, dynamic> json) =>
+      _$FileItemFromJson(json);
 }
